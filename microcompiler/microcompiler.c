@@ -1,9 +1,15 @@
-#include <ctype.h>
+/* Alexandre Werneck 1320614 3WA */
+/* Stephano 3WA */
+
 #include <stdio.h>
 #include <stdlib.h>  
-#include <string.h>
 
 typedef int (*funcp) ();
+
+static void error (const char *msg, int line) {
+  fprintf(stderr, "Erro: %s na linha %d\n", msg, line);
+  exit(EXIT_FAILURE);
+}
 
 void libera(void *p)
 {
