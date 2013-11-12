@@ -16,12 +16,10 @@ void libera(void *p)
 
 }
 
-char * traduzAss (char * entrada)
-{
-}
-
 void traduz (char * entrada , int * posicao, char * resposta)
 {
+
+/* posicao deve ser incrementado pela funcao */
 	
 }
 
