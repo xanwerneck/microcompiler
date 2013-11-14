@@ -41,5 +41,37 @@ void gera(FILE *f, void **code, funcp *entry)
 }
 
 
+void gera(FILE *mfile, void **code, funcp *entry)
+{
 
+	unsigned char inicio[] = {0x55, 0x89, 0xe5, 0x83, 0xec, 0x50};
+
+	while ((c = fgetc(mfile)) != EOF) {
+		switch (c) {
+		  case 'f': {
+			if (fscanf(myfp, "unction") != 0){ 
+			  puts("Comando Invalido");
+			}
+		  }
+		  case 'r':{
+		    /* trata retorno */
+		  }
+		  case 'p':{
+			/* trata parametro */
+		  }
+		  case 'v':{
+			/* trata variavel */
+		  }
+		  case '$':{
+			/* trata constante */
+		  }
+	}
+	return (funcp)cod_maquina;
+	
+}
+
+void gera_retorno(unsigned char * cod_maquina)
+{
+/* preenche o vetor que vai retornar */
+}
  
