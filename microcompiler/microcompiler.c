@@ -3,8 +3,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>  
+#include <string.h>
+
+
+
 
 typedef int (*funcp) ();
+
+struct registrador{
+	char name[2];
+	int state;
+};typedef struct registrador Registrador;
 
 static void error (const char *msg, int line) {
   fprintf(stderr, "Erro: %s na linha %d\n", msg, line);
@@ -15,24 +24,52 @@ void libera(void *p)
 {
 
 }
-
-void traduz (char * entrada , int * posicao, char * resposta)
-{
-
-/* posicao deve ser incrementado pela funcao */
+	/*edx será guardado para fazer comparacoes*/
+	/* posicao deve ser incrementado pela funcao */
 	
-}
+	/*int eax = 0;
+	int ecx = 1;
+	int edx = 2;
+	int ebx = 3;
+	int esp = 4;
+	int ebp = 5;
+	int i;
+	char  strtemp[20];
+	//char mov[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
+	char ret[10] = {0x83, 0xf0, 0x00, 0x75, 0x05, 0xb8, 0x00, 0x00, 0x00, 0x0};	//ret[1] varia de acordo com o reg. ret[2] varia de acorodo com o que esta sendo comparado.
+	*/
+	
 
 void gera(FILE *f, void **code, funcp *entry)
 {
 
-	char * temp, * resposta;
+	char resposta[1000], temp[100];
 	int max_buff = 1000;
 	int tam_resp=0, cont=0;
+	char c;
+
+	Registrador eax, ebx, ecx, edx;
+
+	char fun[3] = {0x55, 0x89, 0xe5};
+	char fim[1] = {0xc3};
 	
-	while(!feof(out_ass)){				//Le o arquivo assembly.
-		fgets(temp, max_buff , out_ass);
-		traduz(temp, &cont, resposta);
+	
+	
+	while(!feof(f)){				//Le o arquivo de entrada.
+		
+		fgets(temp, max_buff , f);
+
+		c = temp[0];
+
+		switch (c){
+			case 'f':
+				strcat(resposta,fun);
+			case 'e':
+				strcat(resposta,fim);
+				eax.state = ebx.state = ecx.state = edx.state = 0;
+			case 'r':
+
+		}
 	}
 
 		
@@ -41,37 +78,7 @@ void gera(FILE *f, void **code, funcp *entry)
 }
 
 
-void gera(FILE *mfile, void **code, funcp *entry)
-{
 
-	unsigned char inicio[] = {0x55, 0x89, 0xe5, 0x83, 0xec, 0x50};
+ 
 
-	while ((c = fgetc(mfile)) != EOF) {
-		switch (c) {
-		  case 'f': {
-			if (fscanf(myfp, "unction") != 0){ 
-			  puts("Comando Invalido");
-			}
-		  }
-		  case 'r':{
-		    /* trata retorno */
-		  }
-		  case 'p':{
-			/* trata parametro */
-		  }
-		  case 'v':{
-			/* trata variavel */
-		  }
-		  case '$':{
-			/* trata constante */
-		  }
-	}
-	return (funcp)cod_maquina;
-	
-}
-
-void gera_retorno(unsigned char * cod_maquina)
-{
-/* preenche o vetor que vai retornar */
-}
  
