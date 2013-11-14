@@ -19,16 +19,16 @@ void gera(FILE *f, void **code, funcp *entry)
 	int c, line =1;
 	int posic_array = 0;
 
-        my_array = * code;
 
-	unsigned char begin[] = {0x55, 0x89, 0xe5};
-	unsigned char fim[] = {0x89, 0xec, 0x5d};
+	unsigned char begin[3] = {0x55, 0x89, 0xe5};
+	unsigned char fim[3] = {0x89, 0xec, 0x5d};
 	
-	unsigned char add[] = {0xb8};
-        unsigned char add2[] = {0x00, 0x00, 0x00, 0x01};
+	unsigned char add[1] = {0xb8};
+        unsigned char add2[4] = {0x00, 0x00, 0x00, 0x01};
 	/* Monta o array incial */
-	monta_array( my_array , begin , posic_array , 6 );
-	
+	my_array = (unsigned char*) malloc (2048 * sizeof(unsigned char));
+
+	monta_array( my_array , begin , posic_array , 3 );	
 	
 	while ((c = fgetc(f)) != EOF) {
 	    switch (c) {
@@ -81,9 +81,13 @@ void gera(FILE *f, void **code, funcp *entry)
 	    fscanf(f, " ");
 	  }
 
-	monta_array(my_array, add2, posic_array, 1);
+        monta_array(my_array, add, posic_array, 1);
 
-	monta_array(my_array, fim, posic_array, 1);		
+	monta_array(my_array, add2, posic_array, 4);
+
+	monta_array(my_array, fim, posic_array, 3);		
+
+	printf("%02x" , my_array[3]);
 
 	*code = my_array;
 	
@@ -95,7 +99,7 @@ int monta_array(char * my_array , char * to_add , int posic_array , int qtde )
 	while(i < qtde)
 	{
 		my_array[posic_array] = to_add[i];
-		qtde++;
+                posic_array++;
 		i++;
 	}
 	return posic_array;

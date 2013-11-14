@@ -9,11 +9,11 @@
 
 int main(int argc, char **argv)
 {
-	int resultado;
+	int resultado = 0;
 	funcp my_func;
 	FILE *my_fp;
 
-        unsigned char * code = (unsigned char*) malloc (2048 * sizeof(unsigned char));
+        unsigned char * code;
   	
 	my_fp = fopen ("programa.sb", "r");
 	if (my_fp == NULL){
@@ -22,11 +22,11 @@ int main(int argc, char **argv)
 	
 	gera(my_fp, (void**)&code, &my_func ) ;
 	
-	my_func = (funcp)code;
+	//my_func = (funcp)code;
 
-	resultado = (*my_func)(1);
+	//resultado = (*my_func)(1);
 	
-	printf ("Resultado de compila.c: %d\n", resultado);
+	printf ("Resultado de compila: %d\n", resultado);
 	return 0;
 }
 /*
