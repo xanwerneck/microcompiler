@@ -9,22 +9,25 @@
 
 int main(int argc, char **argv)
 {
-	int resultado = 0;
+	int i = 0,resultado = 0;
 	funcp my_func;
 	FILE *my_fp;
-
-        unsigned char * code;
-  	
+    unsigned char * code;  	
+	
 	my_fp = fopen ("programa.sb", "r");
 	if (my_fp == NULL){
 		perror ("Nao conseguiu abrir arquivo!");
 	}	
 	
 	gera(my_fp, (void**)&code, &my_func ) ;
-	
-	//my_func = (funcp)code;
 
-	//resultado = (*my_func)(1);
+
+	while(i < 12){
+		printf("Posicao %02x\n" , code[i]);
+		i++;
+	}
+	
+	resultado = (*my_func)(1);
 	
 	printf ("Resultado de compila: %d\n", resultado);
 	return 0;
