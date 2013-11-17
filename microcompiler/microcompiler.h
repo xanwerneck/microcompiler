@@ -6,7 +6,7 @@ typedef int (*funcp) ();
 /**
 * Funcao geradora do codigo de maquina
 */
-void gera(FILE *f, void **code, funcp *entry);
+void gera(FILE *f, void **code , funcp * entry);
 
 
 /**

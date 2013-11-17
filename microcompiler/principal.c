@@ -12,25 +12,44 @@ int main(int argc, char **argv)
 	int i = 0,resultado = 0;
 	funcp my_func;
 	FILE *my_fp;
-    unsigned char * code;  	
+    unsigned char * code;
+
+	/*teste */
+	funcp aqui;
+	int teste2;
+	unsigned char teste[12] = {0x55,0x89,0xe5,0xb8,0x01,0x00,0x00,0x00,0x89,0xec,0x5d,0xc3};
 	
 	my_fp = fopen ("programa.sb", "r");
 	if (my_fp == NULL){
 		perror ("Nao conseguiu abrir arquivo!");
 	}	
 	
+<<<<<<< HEAD
 	gera(my_fp, (void**)&code, &my_func ) ;
+=======
+	gera(my_fp, (void**)&code , &my_func ) ;
+>>>>>>> 5d926a07abe274e99c95d38df9607ccb86c636f7
 
 	while(i < 12){
 		printf("Posicao %02x\n" , code[i]);
 		i++;
 	}
 	
+<<<<<<< HEAD
 	&my_func = code;
 
 	resultado = (*my_func)();
+=======
+
+	//resultado = (*my_func)();
+>>>>>>> 5d926a07abe274e99c95d38df9607ccb86c636f7
 	
 	printf ("Resultado de compila: %d\n", resultado);
+
+	aqui = (funcp)teste;
+	teste2 = (*aqui)();
+	printf("Valor: %d" , teste2);
+
 	return 0;
 }
 /*

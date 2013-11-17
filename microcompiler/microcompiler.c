@@ -17,21 +17,26 @@ void error(char * Mensagem, int line){
 
 void libera(void *p)
 {
-
+	free(p);
 }
 
-void gera(FILE *f, void **code, funcp *entry)
+void gera(FILE *f, void **code , funcp * entry)
 { 
 
 	unsigned char * my_array;
 	int c, line =1;
 	int posic_array = 0;
+	funcp aqui;
+	int teste2;
 
 	unsigned char begin[3] = {0x55, 0x89, 0xe5};
+
+	unsigned char teste[12] = {0x55,0x89,0xe5,0xb8,0x01,0x00,0x00,0x00,0x89,0xec,0x5d,0xc3};
+
 	unsigned char fim[4] = {0x89, 0xec, 0x5d, 0xc3};
 	
 	unsigned char ret[1] = {0xb8};
-	unsigned char teste[4] = {0x01,0x00,0x00,0x00};
+
 	/* Monta o array incial */
 	my_array = (unsigned char*) malloc (2048 * sizeof(unsigned char));
 
@@ -75,7 +80,7 @@ void gera(FILE *f, void **code, funcp *entry)
 		break;
 	      }
 	      case 'r': {  /* ret */
-			int i0, i1;
+			int i0=0, i1=0;
 			char v0, v1;
 			if (fscanf(f, "et? %c%d %c%d", &v0, &i0, &v1, &i1) != 4)
 			   error("comando invalido", line);
@@ -83,7 +88,8 @@ void gera(FILE *f, void **code, funcp *entry)
 				if(v1=='$'){
 					my_array[posic_array] = ret[0];
 					posic_array++;
-					posic_array = monta_array(my_array, teste, posic_array, 4);
+					*( (int *) &my_array[posic_array] ) = i1;
+					posic_array += 4;						
 				}
 				if(v1=='p'){
 
@@ -108,8 +114,10 @@ void gera(FILE *f, void **code, funcp *entry)
 
 	*code = my_array;
 
-	entry = (funcp)&code;
-
+	aqui = (funcp)teste;
+	printf("Valor: %x" , teste[12]);
+	//teste2 = (*aqui)();
+	printf("Valor: %d" , teste2);
 	
 }
 
