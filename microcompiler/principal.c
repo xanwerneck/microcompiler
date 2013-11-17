@@ -21,13 +21,14 @@ int main(int argc, char **argv)
 	
 	gera(my_fp, (void**)&code, &my_func ) ;
 
-
 	while(i < 12){
 		printf("Posicao %02x\n" , code[i]);
 		i++;
 	}
 	
-	resultado = (*my_func)(1);
+	&my_func = code;
+
+	resultado = (*my_func)();
 	
 	printf ("Resultado de compila: %d\n", resultado);
 	return 0;
