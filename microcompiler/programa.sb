@@ -1,3 +1,7 @@
 function
-ret? $0 $10
+ret? p0 $1
+v0 = p0 - $1
+v1 = call 0 v0
+v0 = p0 * v1
+ret? $0 v0
 end

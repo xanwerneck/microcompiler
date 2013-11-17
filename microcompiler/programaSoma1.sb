@@ -1,0 +1,4 @@
+function
+v0 = $5 + $50
+ret? $0 v0
+end
