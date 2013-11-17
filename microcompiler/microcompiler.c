@@ -26,12 +26,8 @@ void gera(FILE *f, void **code , funcp * entry)
 	unsigned char * my_array;
 	int c, line =1;
 	int posic_array = 0;
-	funcp aqui;
-	int teste2;
 
 	unsigned char begin[3] = {0x55, 0x89, 0xe5};
-
-	unsigned char teste[12] = {0x55,0x89,0xe5,0xb8,0x01,0x00,0x00,0x00,0x89,0xec,0x5d,0xc3};
 
 	unsigned char fim[4] = {0x89, 0xec, 0x5d, 0xc3};
 	
@@ -114,11 +110,8 @@ void gera(FILE *f, void **code , funcp * entry)
 
 	*code = my_array;
 
-	aqui = (funcp)teste;
-	printf("Valor: %x" , teste[12]);
-	//teste2 = (*aqui)();
-	printf("Valor: %d" , teste2);
-	
+	entry = (funcp)my_array;
+
 }
 
 int monta_array(unsigned char * my_array ,unsigned char * to_add , int posic_array , int qtde )
