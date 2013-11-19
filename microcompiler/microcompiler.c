@@ -107,7 +107,47 @@ void gera(FILE *f, void **code , funcp * entry)
 						  }
 						 
 
-					  }else{
+					  }else{ /* param = var + $ */
+						  
+						if(op == '+'){
+							  unsigned char param2[] = {0x8b ,0x55};
+						      posic_array = monta_array (my_array[i], param2, posic_array, 2);
+							  
+							  my_array[i][posic_array] = (i1 * 4) + 8;			
+							  posic_array++;
+
+							  unsigned char param21[] = {0x81, 0xc2};
+						      posic_array = monta_array (my_array[i], param21, posic_array, 2);
+
+							  *( (int *) &my_array[i][posic_array] ) = i2;
+							  posic_array += 4;	
+
+							  unsigned char param3[] = {0x89, 0x55, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param3, posic_array, 3);	
+						  }
+						  if(op == '-'){
+
+							  unsigned char param2[] = {0x8b ,0x55};
+						      posic_array = monta_array (my_array[i], param2, posic_array, 2);
+							  
+							  my_array[i][posic_array] = (i1 * 4) + 8;			
+							  posic_array++;
+
+							  unsigned char param21[] = {0x81, 0xea};
+						      posic_array = monta_array (my_array[i], param21, posic_array, 2);
+
+							  *( (int *) &my_array[i][posic_array] ) = i2;
+							  posic_array += 4;	
+
+							  unsigned char param3[] = {0x89, 0x55, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param3, posic_array, 3);
+
+						  }
+						  if(op == '*'){
+
+							 /* falta implementação */
+
+						  }
 
 					  }
 
@@ -126,7 +166,7 @@ void gera(FILE *f, void **code , funcp * entry)
 							  posic_array += 4;		
 						  }
 						  if(op == '-'){
-
+							  
 							  unsigned char param2[] = {0x8b ,0x55};
 						      posic_array = monta_array (my_array[i], param2, posic_array, 2);
 							  
@@ -153,7 +193,41 @@ void gera(FILE *f, void **code , funcp * entry)
 						  }
 						 
 
-					  }else{
+					  }else{ /* var = var + $ */
+
+						   if(op == '+'){
+							  unsigned char param3[] = {0x8b, 0x4d, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param3, posic_array, 3);
+
+							  unsigned char param21[] = {0x81, 0xc1};
+						      posic_array = monta_array (my_array[i], param21, posic_array, 2);
+
+							  *( (int *) &my_array[i][posic_array] ) = i2;
+							  posic_array += 4;	
+
+							  unsigned char param31[] = {0x89, 0x4d, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param31, posic_array, 3);
+						  }
+						  if(op == '-'){
+							  
+							  unsigned char param3[] = {0x8b, 0x4d, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param3, posic_array, 3);
+
+							  unsigned char param21[] = {0x81, 0xe9};
+						      posic_array = monta_array (my_array[i], param21, posic_array, 2);
+
+							  *( (int *) &my_array[i][posic_array] ) = i2;
+							  posic_array += 4;	
+
+							  unsigned char param31[] = {0x89, 0x4d, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param31, posic_array, 3);
+
+						  }
+						  if(op == '*'){
+
+							 /* falta implementação */
+
+						  }
 
 					  }
 

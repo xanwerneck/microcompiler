@@ -1,4 +1,5 @@
 function
-v0 = p0 - $10
+v0 = p0 + $5
+v0 = v0 - $2
 ret? $0 v0
 end

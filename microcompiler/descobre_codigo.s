@@ -19,9 +19,10 @@ ex12:	push    %ebp
 
 		subl    $20, %esp
 		
-		movl     8(%ebp), %eax
-		subl     $300000, %eax
-		movl     %eax, -4(%ebp)
+		movl     -4(%ebp), %ecx
+		subl     $300000, %ecx
+		movl     %ecx, -4(%ebp)
+
 	
         movl    %ebp, %esp
         popl    %ebp
