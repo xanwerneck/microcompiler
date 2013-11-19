@@ -41,7 +41,7 @@ void gera(FILE *f, void **code , funcp * entry)
 
 				posic_array = monta_array( my_array[i] , begin , posic_array , 3 );
 
-				unsigned char temp[] = {0x83, 0xec, 0x20};  /* Inicializa as variaveis */
+				unsigned char temp[] = {0x83, 0xec, 0x40};  /* Inicializa as variaveis */
 				posic_array = monta_array (my_array[i], temp, posic_array, 3);
 
 				break;
@@ -74,11 +74,12 @@ void gera(FILE *f, void **code , funcp * entry)
 					error("comando invalido", line);
 				  //printf("%c%d = %c%d %c %c%d\n", v0, i0, v1, i1, op, v2, i2);
 				  
-				  if(v1 == 'p'){ 
+				  if(v1 == 'p'){ /* = param + $ */
 
-					  if(v0 == 'p'){ /* param = param + $ */
+					  if(v0 == 'p'){									//Esse tambeeeem mudaaaaaar
 
 						  if(op == '+'){
+							  /*
 							  unsigned char param2[] = {0x81, 0x45};
 						      posic_array = monta_array (my_array[i], param2, posic_array, 2);
 							  
@@ -86,28 +87,59 @@ void gera(FILE *f, void **code , funcp * entry)
 							  posic_array++;
 
 							  *( (int *) &my_array[i][posic_array] ) = i2;
-							  posic_array += 4;		
-						  }
-						  if(op == '-'){
-
-							  unsigned char param2[] = {0x81, 0x6d};
+							  posic_array += 4;	
+							  */
+							  unsigned char param2[] = {0x8b ,0x55};
 						      posic_array = monta_array (my_array[i], param2, posic_array, 2);
 							  
 							  my_array[i][posic_array] = (i1 * 4) + 8;			
 							  posic_array++;
 
+							  unsigned char param21[] = {0x81, 0xc2};
+						      posic_array = monta_array (my_array[i], param21, posic_array, 2);
+
 							  *( (int *) &my_array[i][posic_array] ) = i2;
 							  posic_array += 4;	
+
+							  unsigned char param22[] = {0x89, 0x55};
+						      posic_array = monta_array (my_array[i], param22, posic_array, 2);	
+
+							  if(v0=='p')															//Comentadaaaaaadooooo mudaaaaaar
+								  my_array[i][posic_array] = (i0 * 4) + 8;
+							  else
+								  my_array[i][posic_array] = -(i0 * 4);
+							  posic_array++;
+
+						  }
+						  if(op == '-'){
+
+							  unsigned char param2[] = {0x8b ,0x55};
+						      posic_array = monta_array (my_array[i], param2, posic_array, 2);
+							  
+							  my_array[i][posic_array] = (i1 * 4) + 8;			
+							  posic_array++;
+
+							  unsigned char param21[] = {0x81, 0x6d};
+						      posic_array = monta_array (my_array[i], param21, posic_array, 2);
+
+							  *( (int *) &my_array[i][posic_array] ) = i2;
+							  posic_array += 4;	
+
+							  unsigned char param22[] = {0x89, 0x55};
+						      posic_array = monta_array (my_array[i], param22, posic_array, 2);	
+
+							  my_array[i][posic_array] = (i0 * 4) + 8;			
+							  posic_array++;
 
 						  }
 						  if(op == '*'){
 
-							 /* falta implementação */
+							 /* falta implementaÃ§Ã£o */
 
 						  }
 						 
 
-					  }else{ /* param = var + $ */
+					  }else{ 
 						  
 						if(op == '+'){
 							  unsigned char param2[] = {0x8b ,0x55};
@@ -122,8 +154,12 @@ void gera(FILE *f, void **code , funcp * entry)
 							  *( (int *) &my_array[i][posic_array] ) = i2;
 							  posic_array += 4;	
 
-							  unsigned char param3[] = {0x89, 0x55, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
-						      posic_array = monta_array (my_array[i], param3, posic_array, 3);	
+							  unsigned char param3[] = {0x89, 0x55}; /* 0xfc Ã© a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param3, posic_array, 2);	
+
+							  my_array[i][posic_array] = -(i0 * 4);
+							  posic_array++;
+
 						  }
 						  if(op == '-'){
 
@@ -139,13 +175,16 @@ void gera(FILE *f, void **code , funcp * entry)
 							  *( (int *) &my_array[i][posic_array] ) = i2;
 							  posic_array += 4;	
 
-							  unsigned char param3[] = {0x89, 0x55, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
-						      posic_array = monta_array (my_array[i], param3, posic_array, 3);
+							  unsigned char param3[] = {0x89, 0x55}; /* 0xfc Ã© a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param3, posic_array, 2);
+
+							  my_array[i][posic_array] = -(i0 * 4);
+							  posic_array++;
 
 						  }
 						  if(op == '*'){
 
-							 /* falta implementação */
+							 /* falta implementaÃ§Ã£o */
 
 						  }
 
@@ -153,7 +192,7 @@ void gera(FILE *f, void **code , funcp * entry)
 
 				  }else if(v1 == 'v'){ 
 
-					  if(v0 == 'p'){ /* var = param + $ */
+					  if(v0 == 'p'){ /* param = var + $ */
 
 						  if(op == '+'){
 							  unsigned char param2[] = {0x81, 0x45};
@@ -182,13 +221,13 @@ void gera(FILE *f, void **code , funcp * entry)
 							  unsigned char param22[] = {0x89 ,0x55};
 						      posic_array = monta_array (my_array[i], param22, posic_array, 2);
 
-							  my_array[i][posic_array] = 0xfc;	
+							  my_array[i][posic_array] = -(i0 * 4);
 							  posic_array++;
 
 						  }
 						  if(op == '*'){
 
-							 /* falta implementação */
+							 /* falta implementaÃ§Ã£o */
 
 						  }
 						 
@@ -196,7 +235,7 @@ void gera(FILE *f, void **code , funcp * entry)
 					  }else{ /* var = var + $ */
 
 						   if(op == '+'){
-							  unsigned char param3[] = {0x8b, 0x4d, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
+							  unsigned char param3[] = {0x8b, 0x4d, 0xfc}; /* 0xfc Ã© a primeira variavel, tem que corrigir */
 						      posic_array = monta_array (my_array[i], param3, posic_array, 3);
 
 							  unsigned char param21[] = {0x81, 0xc1};
@@ -205,12 +244,15 @@ void gera(FILE *f, void **code , funcp * entry)
 							  *( (int *) &my_array[i][posic_array] ) = i2;
 							  posic_array += 4;	
 
-							  unsigned char param31[] = {0x89, 0x4d, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
-						      posic_array = monta_array (my_array[i], param31, posic_array, 3);
+							  unsigned char param31[] = {0x89, 0x4d}; /* 0xfc Ã© a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param31, posic_array, 2);
+
+							  my_array[i][posic_array] = -(i0 * 4);
+							  posic_array++;
 						  }
 						  if(op == '-'){
 							  
-							  unsigned char param3[] = {0x8b, 0x4d, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
+							  unsigned char param3[] = {0x8b, 0x4d, 0xfc}; /* 0xfc Ã© a primeira variavel, tem que corrigir */
 						      posic_array = monta_array (my_array[i], param3, posic_array, 3);
 
 							  unsigned char param21[] = {0x81, 0xe9};
@@ -219,13 +261,16 @@ void gera(FILE *f, void **code , funcp * entry)
 							  *( (int *) &my_array[i][posic_array] ) = i2;
 							  posic_array += 4;	
 
-							  unsigned char param31[] = {0x89, 0x4d, 0xfc}; /* 0xfc é a primeira variavel, tem que corrigir */
-						      posic_array = monta_array (my_array[i], param31, posic_array, 3);
+							  unsigned char param31[] = {0x89, 0x4d}; /* 0xfc Ã© a primeira variavel, tem que corrigir */
+						      posic_array = monta_array (my_array[i], param31, posic_array, 2);
+
+							  my_array[i][posic_array] = -(i0 * 4);
+							  posic_array++;
 
 						  }
 						  if(op == '*'){
 
-							 /* falta implementação */
+							 /* falta implementaÃ§Ã£o */
 
 						  }
 
@@ -244,7 +289,7 @@ void gera(FILE *f, void **code , funcp * entry)
 			if(v0 == '$'){
 				if(i0 == 0){
 					if(v1=='$'){
-						my_array[i][posic_array] = ret[0]; /* condição de retorno  - 0xb8 */
+						my_array[i][posic_array] = ret[0]; /* condiÃ§Ã£o de retorno  - 0xb8 */
 						posic_array++;                 
 						*( (int *) &my_array[i][posic_array] ) = i1;
 						posic_array += 4;						
@@ -289,7 +334,7 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param2[] = {0x74, 0x00};
 					posic_array = monta_array (my_array[i], param2, posic_array, 2);  
 					
-					my_array[i][posic_array] = ret[0]; /* condição de retorno  - 0xb8 */
+					my_array[i][posic_array] = ret[0]; /* condiÃ§Ã£o de retorno  - 0xb8 */
 					posic_array++;                 
 					*( (int *)&my_array[i][posic_array] ) = i1;
 					posic_array += 4;
