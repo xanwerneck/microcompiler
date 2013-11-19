@@ -17,11 +17,10 @@ ex1:	push    %ebp
 ex12:	push    %ebp
         movl    %esp, %ebp
 
-		subl    $20, %esp
-		
-		movl     -4(%ebp), %ecx
-		subl     $300000, %ecx
-		movl     %ecx, -4(%ebp)
+		movl    8(%ebp), %edx
+		movl    12(%ebp), %ecx
+		imul    %edx, %ecx
+		movl    %edx, 8(%ebp)
 
 	
         movl    %ebp, %esp

@@ -49,7 +49,7 @@ void gera(FILE *f, void **code , funcp * entry)
 				char c0;
 				if (fscanf(f, "nd%c", &c0) != 1) error("comando invalido", line);
 					posic_array = monta_array(my_array[i], fim, posic_array, 4);
-				i++;			//Passa pra prox posicao do array de funcoes.
+				i++;	//Passa pra prox posicao do array de funcoes.
 				break;
 			}
 	      case 'v': case 'p': {  /* atribuicao */
@@ -191,7 +191,61 @@ void gera(FILE *f, void **code , funcp * entry)
 					}
 					if(op == '*'){
 
-						/* falta implementação */
+						unsigned char MovAtribuir[] = {0x89, 0x55};
+						unsigned char param2[] = {0x8b ,0x55};									//Faz o mov		
+						posic_array = monta_array (my_array[i], param2, posic_array, 2);
+							  
+						if(v1=='p')																//Se v1 for um parametro														
+						{
+								my_array[i][posic_array] = (i1 * 4) + 8;							//Passa v1 pro registrador edx					
+						}
+						else
+						{																			//Se v1 for uma variavel
+							my_array[i][posic_array] = -(i1 * 4);									//Passa v1 pro registrador edx
+						}
+
+						posic_array++;
+
+						if(v2 == '$')																//Multiplicacao com uma cte.
+						{
+						unsigned char param21[] = {0x69, 0xd2};									//Faz a multiplicacao.
+						posic_array = monta_array (my_array[i], param21, posic_array, 2);
+								  
+						*( (int *) &my_array[i][posic_array] ) = i2;
+						posic_array += 4;	
+						}
+						else if(v2 == 'v')														//Multiplicacao com outra variavel.
+						{
+						unsigned char ecxVezesEdx[] = {0x0f, 0xaf, 0xd1};
+						unsigned char param22[] = {0x8b, 0x4d};									//Passando v2 para ecx
+						posic_array = monta_array (my_array[i], param22, posic_array, 2);
+						my_array[i][posic_array] = -(i2 * 4);
+						posic_array++;
+															
+						posic_array = monta_array (my_array[i], ecxVezesEdx, posic_array, 3);		//Multiplica ecx com edx
+								  
+						}
+						else if(v2 == 'p')														//Multiplicacao com outro parametro.
+						{
+						unsigned char ecxVezesEdx[] = {0x0f, 0xaf, 0xd1};	
+						unsigned char param22[] = {0x8b, 0x4d};									//Passando v2 para ecx
+						posic_array = monta_array (my_array[i], param22, posic_array, 2);
+						my_array[i][posic_array] = (i2 * 4) + 8;
+						posic_array++;
+														
+						posic_array = monta_array (my_array[i], ecxVezesEdx, posic_array, 3);		//Multiplica ecx com edx
+								  
+
+						}
+
+						posic_array = monta_array (my_array[i], MovAtribuir, posic_array, 2);	
+
+						if(v0=='p')															
+							my_array[i][posic_array] = (i0 * 4) + 8;
+						else
+							my_array[i][posic_array] = -(i0 * 4);
+						posic_array++;
+
 
 					}
 
