@@ -24,13 +24,13 @@ int main(void)
 	gera(my_fp, (void**)&code , &my_func ) ;
 
 
-	while(i < 12){
+	while(i < 25){
 		printf("Posicao %02x\n" , code[i]);
 		i++;
 	}
 	
 
-	resultado = (*my_func)();
+	resultado = (*my_func)(2, 1, 0, 0, 0);
 
 	
 	printf ("Resultado de compila: %d\n", resultado);

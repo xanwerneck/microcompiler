@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef int (*funcp) ();
+ typedef int (*funcp) (int a, int b, int c, int d, int e);
 
 /**
 * Funcao geradora do codigo de maquina

@@ -1,9 +1,40 @@
-.global   ex1, ex2, ex3
+.global   ex1, ex1, ex12, ex2, ex3
 
 ex1:	push    %ebp
         movl    %esp, %ebp
 
-	    movl    $1, %eax
+	    movl    %eax, %eax
+		movl    %edx, %eax
+		movl    %ecx, %eax
+		movl    %ebx, %eax
+		movl    %esi, %eax
+		movl    8(%ebp), %eax
+	
+        movl    %ebp, %esp
+        popl    %ebp
+        ret
+
+ex12:	push    %ebp
+        movl    %esp, %ebp
+
+		subl    $20, %esp
+		
+		movl     8(%ebp), %eax
+		subl     $300000, %eax
+		movl     %eax, -4(%ebp)
+	
+        movl    %ebp, %esp
+        popl    %ebp
+        ret
+		
+ex11:	push    %ebp
+        movl    %esp, %ebp
+
+	    cmpl    $0, 8(%ebp)
+		je      f2
+f:		movl    $2, %eax
+
+f2:     movl    $0, %edx
 	
         movl    %ebp, %esp
         popl    %ebp
