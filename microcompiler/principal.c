@@ -24,7 +24,7 @@ int main(void)
 	gera(my_fp, (void**)&code , &my_func ) ;
 
 
-	while(i < 25){
+	while(i < 70){
 		printf("Posicao %02x\n" , code[i]);
 		i++;
 	}

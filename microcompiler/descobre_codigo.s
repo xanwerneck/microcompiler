@@ -13,17 +13,17 @@ ex1:	push    %ebp
         movl    %ebp, %esp
         popl    %ebp
         ret
-
+/*
+ret? p0 $2
+*/
 ex12:	push    %ebp
         movl    %esp, %ebp
 
-		movl    8(%ebp), %edx
-		movl    12(%ebp), %ecx
-		imul    %edx, %ecx
-		movl    %edx, 8(%ebp)
-
-	
-        movl    %ebp, %esp
+		movl    $0, %eax
+		cmpl    $0, %eax
+		je      ff2		
+		
+ff2:    movl    %ebp, %esp
         popl    %ebp
         ret
 		
