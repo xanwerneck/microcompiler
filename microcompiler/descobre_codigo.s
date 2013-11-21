@@ -19,9 +19,13 @@ ret? p0 $2
 ex12:	push    %ebp
         movl    %esp, %ebp
 
+		
+		movl    -4(%ebp), %edx
+		movl    8(%ebp), %eax
+		cmpl    $0, %edx
+		je      ff2
+		
 		movl    $0, %eax
-		cmpl    $0, %eax
-		je      ff2		
 		
 ff2:    movl    %ebp, %esp
         popl    %ebp
