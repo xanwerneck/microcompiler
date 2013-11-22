@@ -40,6 +40,7 @@ void gera(FILE *f, void **code , funcp * entry)
 { 
 	/* Variáveis locais */
 	unsigned char * my_array[10];
+	int posic_func_ar[10];
 	int c, line =1, i=0;
 	int posic_array = 0;
 	int posic_ret[10][3];
@@ -70,6 +71,7 @@ void gera(FILE *f, void **code , funcp * entry)
 				if (fscanf(f, "unction") != 0) error("comando invalido", line);
 
 				my_array[i] = (unsigned char*) malloc (128 * sizeof(unsigned char)); 
+				posic_func_ar[i] = posic_array;
 
 				posic_array = monta_array( my_array[i] , inicio , posic_array , 3 );
 				posic_array = monta_array (my_array[i], alocaVarLocais, posic_array, 3);
@@ -98,6 +100,58 @@ void gera(FILE *f, void **code , funcp * entry)
 				  if (fscanf(f, "all %d %c%d", &fil, &v1, &i1) != 3) 
 					error("comando invalido", line);
 				  //printf("%c%d = call %d %c%d\n", v0, i0, fil, v1, i1);
+
+
+				  if(v0 == 'p'){
+
+
+				  }else if(v0 == 'v'){
+					 
+                    int val;
+					unsigned char param2[] = {0x8b, 0x55};
+				    posic_array = monta_array (my_array[i], param2, posic_array, 2);
+
+					if(v1 == 'v'){
+						my_array[i][posic_array] = -((i1+1) * 4);
+					}
+					posic_array++;
+											
+					unsigned char param21[] = {0x52, 0xe8}; /* Move 0 para eax retornar 0 */
+					posic_array = monta_array (my_array[i], param21, posic_array, 2);
+
+					/*** adicionar destino ***/
+					val = posic_func_ar[fil] - (posic_array+3);
+					
+
+					*( (int *) &my_array[i][posic_array] ) = val;
+					posic_array += 4;
+
+					printf("Qual valor ? %d\n" , val);
+
+					//val = (int)&my_array[fil][0] - (int)&my_array[i][posic_array+1];
+	
+					//my_array[i][posic_array]     = val >> 24;
+					//my_array[i][posic_array-1]   = val >> 16;
+					//my_array[i][posic_array-2]   = val >> 8;
+					//my_array[i][posic_array-3]   = val;
+
+				//	*( (int *) &my_array[i][posic_array] ) = val;
+				//	posic_array += 4;
+
+					unsigned char param3[] = {0x5a, 0x89, 0x55}; /* Move 0 para eax retornar 0 */
+					posic_array = monta_array (my_array[i], param3, posic_array, 3);
+
+					my_array[i][posic_array] = -((i0+1) * 4);
+					posic_array++;
+
+					posic_ret[in_retorno-1][1] =  posic_array;
+
+					if(in_retorno > 0){
+						posic_ret[in_retorno][0] += 18;
+					}
+
+				  }
+
 				  
 				}
 				else { /* operacao aritmetica */
@@ -297,10 +351,10 @@ void gera(FILE *f, void **code , funcp * entry)
 			char v0, v1;
 			in_retorno++;
 
+			/* Caso não seja a primeira condição de retorno, adiciona os elementos a andarem na pilha */
 			if(in_retorno > 0){
 				posic_ret[in_retorno][0] += 7;
 			}
-			//posic_ret[in_retorno][0] += 7;
 
 			if (fscanf(f, "et? %c%d %c%d", &v0, &i0, &v1, &i1) != 4)
 			   error("comando invalido", line);
