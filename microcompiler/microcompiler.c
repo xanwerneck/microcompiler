@@ -43,7 +43,7 @@ void gera(FILE *f, void **code , funcp * entry)
 	int c, line =1, i=0;
 	int posic_array = 0;
 	int posic_ret[10][3];
-	int existe_conta = 0;
+	int in_retorno = 0;
 
 	/* Montagem da pilha no início da função */
 	unsigned char inicio[3]        = {0x55, 0x89, 0xe5};
@@ -157,17 +157,17 @@ void gera(FILE *f, void **code , funcp * entry)
 
 						posic_array++;
 
-						if(existe_conta > 0){
+						if(in_retorno > 0){
 							if(v2 == '$'){
-								posic_ret[existe_conta][0] += 12;
+								posic_ret[in_retorno][0] += 12;
 							}else{
-								posic_ret[existe_conta][0] += 11;
+								posic_ret[in_retorno][0] += 11;
 							}
 						}
 
 					}
-					if(op == '-'){ /* BUGGGGGG */
-	
+					if(op == '-'){ 	
+
 						posic_array = monta_array (my_array[i], MovEdx, posic_array, 2);
 							  
 						if(v1=='p'){
@@ -176,7 +176,7 @@ void gera(FILE *f, void **code , funcp * entry)
 
 						}else{																			//Se v1 for uma variavel
 
-								my_array[i][posic_array] = -(i1 * 4);									//Passa v1 pro registrador edx
+								my_array[i][posic_array] = -((i1+1) * 4);									//Passa v1 pro registrador edx
 
 						}
 
@@ -216,15 +216,15 @@ void gera(FILE *f, void **code , funcp * entry)
 						if(v0=='p')															
 							my_array[i][posic_array] = (i0 * 4) + 8;
 						else
-							my_array[i][posic_array] = -(i0 * 4);
+							my_array[i][posic_array] = -((i0+1) * 4);
 
 						posic_array++;
 
-						if(existe_conta > 0){
+						if(in_retorno > 0){
 							if(v2 == '$'){
-								posic_ret[existe_conta][0] += 12;
+								posic_ret[in_retorno][0] += 12;
 							}else{
-								posic_ret[existe_conta][0] += 11;
+								posic_ret[in_retorno][0] += 11;
 							}
 						}
 
@@ -239,7 +239,7 @@ void gera(FILE *f, void **code , funcp * entry)
 
 						}else{																			//Se v1 for uma variavel
 
-								my_array[i][posic_array] = -(i1 * 4);									//Passa v1 pro registrador edx
+								my_array[i][posic_array] = -((i1+1) * 4);									//Passa v1 pro registrador edx
 
 						}
 
@@ -257,7 +257,7 @@ void gera(FILE *f, void **code , funcp * entry)
 
 							posic_array = monta_array (my_array[i], MovEcx, posic_array, 2);
 
-							my_array[i][posic_array] = -(i2 * 4);
+							my_array[i][posic_array] = -((i2+1) * 4);
 							posic_array++;
 															
 							posic_array = monta_array (my_array[i], ecxVezesEdx, posic_array, 3);		//Multiplica ecx com edx
@@ -279,12 +279,12 @@ void gera(FILE *f, void **code , funcp * entry)
 						if(v0=='p')															
 							my_array[i][posic_array] = (i0 * 4) + 8;
 						else
-							my_array[i][posic_array] = -(i0 * 4);
+							my_array[i][posic_array] = -((i0+1) * 4);
 
 						posic_array++;
 
-						if(existe_conta > 0){
-							posic_ret[existe_conta][0] += 12;
+						if(in_retorno > 0){
+							posic_ret[in_retorno][0] += 12;
 						}
 
 					}
@@ -295,9 +295,9 @@ void gera(FILE *f, void **code , funcp * entry)
 	      case 'r': {  /* ret */
 			int i0=0, i1=0;
 			char v0, v1;
-			existe_conta++;
+			in_retorno++;
 
-			posic_ret[existe_conta][0] -= 1;
+			posic_ret[in_retorno][0] -= 1;
 
 			if (fscanf(f, "et? %c%d %c%d", &v0, &i0, &v1, &i1) != 4)
 			   error("comando invalido", line);
@@ -317,16 +317,16 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param2[] = {0x83, 0xfa, 0x00, 0x74};
 				    posic_array = monta_array (my_array[i], param2, posic_array, 4);
 						
-					my_array[i][posic_array] = posic_ret[existe_conta-1][0];
+					my_array[i][posic_array] = posic_ret[in_retorno-1][0];
 					posic_array++;
 
 					unsigned char param5[] = {0xb8, 0x00, 0x00, 0x00, 0x00}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param5, posic_array, 5);
 
-					posic_ret[existe_conta-1][1] =  posic_array-1;
+					posic_ret[in_retorno-1][1] =  posic_array-1;
 
-					if(existe_conta > 0){
-						posic_ret[existe_conta][0] += 10;
+					if(in_retorno > 0){
+						//posic_ret[in_retorno][0] += 20;
 					}
 
 				}
@@ -346,16 +346,16 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param4[] = {0x83, 0xfa, 0x00, 0x74};
 				    posic_array = monta_array (my_array[i], param4, posic_array, 4);
 						
-					my_array[i][posic_array] = posic_ret[existe_conta-1][0];
+					my_array[i][posic_array] = posic_ret[in_retorno-1][0];
 					posic_array++;
 
 					unsigned char param5[] = {0xb8, 0x00, 0x00, 0x00, 0x00}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param5, posic_array, 5);
 
-					posic_ret[existe_conta-1][1] =  posic_array-1;
+					posic_ret[in_retorno-1][1] =  posic_array-1;
 
-					if(existe_conta > 0){
-						posic_ret[existe_conta][0] += 10;
+					if(in_retorno > 0){
+						//posic_ret[in_retorno][0] += 18;
 					}
 
 				}
@@ -375,16 +375,16 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param4[] = {0x83, 0xfa, 0x00, 0x74};
 				    posic_array = monta_array (my_array[i], param4, posic_array, 4);
 						
-					my_array[i][posic_array] = posic_ret[existe_conta-1][0];
+					my_array[i][posic_array] = posic_ret[in_retorno-1][0];
 					posic_array++;
 
 					unsigned char param5[] = {0xb8, 0x00, 0x00, 0x00, 0x00}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param5, posic_array, 5);
 
-					posic_ret[existe_conta-1][1] =  posic_array-1;
+					posic_ret[in_retorno-1][1] =  posic_array-1;
 
-					if(existe_conta > 0){
-						posic_ret[existe_conta][0] += 10;
+					if(in_retorno > 0){
+						//posic_ret[in_retorno][0] += 18;
 					}
 
 				}
@@ -408,16 +408,16 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param4[] = {0x00, 0x74};
 				    posic_array = monta_array (my_array[i], param4, posic_array, 2);
 						
-					my_array[i][posic_array] = posic_ret[existe_conta-1][0];
+					my_array[i][posic_array] = posic_ret[in_retorno-1][0];
 					posic_array++;
 
 					unsigned char param5[] = {0xb8, 0x00, 0x00, 0x00, 0x00}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param5, posic_array, 5);
 
-					posic_ret[existe_conta-1][1] =  posic_array-1;
+					posic_ret[in_retorno-1][1] =  posic_array-1;
 
-					if(existe_conta > 0){
-						posic_ret[existe_conta][0] += 10;
+					if(in_retorno > 0){
+						//posic_ret[in_retorno][0] += 16;
 					}
 
 				}
@@ -437,16 +437,16 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param4[] = {0x83, 0xfa, 0x00, 0x74};
 				    posic_array = monta_array (my_array[i], param4, posic_array, 4);
 						
-					my_array[i][posic_array] = posic_ret[existe_conta-1][0];
+					my_array[i][posic_array] = posic_ret[in_retorno-1][0];
 					posic_array++;
 
 					unsigned char param5[] = {0xb8, 0x00, 0x00, 0x00, 0x00}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param5, posic_array, 5);
 
-					posic_ret[existe_conta-1][1] =  posic_array-1;
+					posic_ret[in_retorno-1][1] =  posic_array-1;
 
-					if(existe_conta > 0){
-						posic_ret[existe_conta][0] += 10;
+					if(in_retorno > 0){
+						//posic_ret[in_retorno][0] += 16;
 					}
 				}
 				if(v1 == 'v'){
@@ -466,16 +466,16 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param4[] = {0x83, 0xfa, 0x00, 0x74};
 				    posic_array = monta_array (my_array[i], param4, posic_array, 4);
 						
-					my_array[i][posic_array] = posic_ret[existe_conta-1][0];
+					my_array[i][posic_array] = posic_ret[in_retorno-1][0];
 					posic_array++;
 
 					unsigned char param5[] = {0xb8, 0x00, 0x00, 0x00, 0x00}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param5, posic_array, 5);
 
-					posic_ret[existe_conta-1][1] =  posic_array-1;
+					posic_ret[in_retorno-1][1] =  posic_array-1;
 
-					if(existe_conta > 0){
-						posic_ret[existe_conta][0] += 10;
+					if(in_retorno > 0){
+						//posic_ret[in_retorno][0] += 16;
 					}
 
 				}
@@ -499,16 +499,16 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param4[] = {0x00, 0x74};
 				    posic_array = monta_array (my_array[i], param4, posic_array, 2);
 						
-					my_array[i][posic_array] = posic_ret[existe_conta-1][0];
+					my_array[i][posic_array] = posic_ret[in_retorno-1][0];
 					posic_array++;
 
 					unsigned char param5[] = {0xb8, 0x00, 0x00, 0x00, 0x00}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param5, posic_array, 5);
 
-					posic_ret[existe_conta-1][1] =  posic_array-1;
+					posic_ret[in_retorno-1][1] =  posic_array-1;
 
-					if(existe_conta > 0){
-						posic_ret[existe_conta][0] += 10;
+					if(in_retorno > 0){
+						//posic_ret[in_retorno][0] += 16;
 					}
 
 				}
@@ -529,16 +529,16 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param4[] = {0x83, 0xfa, 0x00, 0x74};
 				    posic_array = monta_array (my_array[i], param4, posic_array, 4);
 						
-					my_array[i][posic_array] = posic_ret[existe_conta-1][0];
+					my_array[i][posic_array] = posic_ret[in_retorno-1][0];
 					posic_array++;
 
 					unsigned char param5[] = {0xb8, 0x00, 0x00, 0x00, 0x00}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param5, posic_array, 5);
 
-					posic_ret[existe_conta-1][1] =  posic_array-1;
+					posic_ret[in_retorno-1][1] =  posic_array-1;
 
-					if(existe_conta > 0){
-						posic_ret[existe_conta][0] += 10;
+					if(in_retorno > 0){
+						//posic_ret[in_retorno][0] += 16;
 					}
 				}
 				else{
@@ -558,16 +558,16 @@ void gera(FILE *f, void **code , funcp * entry)
 					unsigned char param4[] = {0x83, 0xfa, 0x00, 0x74};
 				    posic_array = monta_array (my_array[i], param4, posic_array, 4);
 						
-					my_array[i][posic_array] = posic_ret[existe_conta-1][0];
+					my_array[i][posic_array] = posic_ret[in_retorno-1][0];
 					posic_array++;
 
 					unsigned char param5[] = {0xb8, 0x00, 0x00, 0x00, 0x00}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param5, posic_array, 5);
 
-					posic_ret[existe_conta-1][1] =  posic_array-1;
+					posic_ret[in_retorno-1][1] =  posic_array-1;
 
-					if(existe_conta > 0){
-						posic_ret[existe_conta][0] += 10;
+					if(in_retorno > 0){
+						//posic_ret[in_retorno][0] += 16;
 					}
 
 				}
@@ -584,7 +584,7 @@ void gera(FILE *f, void **code , funcp * entry)
 	    fscanf(f, " ");
 	  }
 
-    remontaRetorno(my_array[i-1], existe_conta, posic_ret);
+    remontaRetorno(my_array[i-1], in_retorno, posic_ret);
 
 	*code = my_array[0];
 
@@ -611,6 +611,9 @@ static void remontaRetorno(unsigned char * my_array , int contador , int posicao
 	int temp = 1;
 	unsigned char tempC[1];
 	while(temp <= contador){
+
+		printf("Contador 1: %d" , posicao[(contador-1)-(temp-1)][1]);
+		printf("Contador 2: %d" , posicao[temp-1][1]);
 
 		tempC[0] = my_array[posicao[(contador-1)-(temp-1)][1]];
 		my_array[posicao[(contador-1)-(temp-1)][1]] = my_array[posicao[temp-1][1]];
