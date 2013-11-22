@@ -120,23 +120,22 @@ void gera(FILE *f, void **code , funcp * entry)
 					posic_array = monta_array (my_array[i], param21, posic_array, 2);
 
 					/*** adicionar destino ***/
-					val = posic_func_ar[fil] - (posic_array+3);
-					
+					val = posic_func_ar[fil] - (posic_array+3);				
 
 					*( (int *) &my_array[i][posic_array] ) = val;
 					posic_array += 4;
 
-					printf("Qual valor ? %d\n" , val);
+					printf("Qual valor ? %d\n" , posic_array);
 
-					//val = (int)&my_array[fil][0] - (int)&my_array[i][posic_array+1];
+
+					val = (int)&my_array[fil][posic_func_ar[fil]] - (int)&my_array[i][posic_array];
+
+					printf("Qual valor ? %08x\n" , val);
 	
-					//my_array[i][posic_array]     = val >> 24;
-					//my_array[i][posic_array-1]   = val >> 16;
-					//my_array[i][posic_array-2]   = val >> 8;
-					//my_array[i][posic_array-3]   = val;
-
-				//	*( (int *) &my_array[i][posic_array] ) = val;
-				//	posic_array += 4;
+					my_array[i][posic_array-1]   = val >> 24;
+					my_array[i][posic_array-2]   = val >> 16;
+					my_array[i][posic_array-3]   = val >> 8;
+					my_array[i][posic_array-4]   = val;
 
 					unsigned char param3[] = {0x5a, 0x89, 0x55}; /* Move 0 para eax retornar 0 */
 					posic_array = monta_array (my_array[i], param3, posic_array, 3);
