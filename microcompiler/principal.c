@@ -17,6 +17,7 @@ int main(void)
 
 	
 	my_fp = fopen ("programa.sb", "r");
+
 	if (my_fp == NULL){
 		perror ("Nao conseguiu abrir arquivo!");
 	}	
@@ -24,13 +25,13 @@ int main(void)
 	gera(my_fp, (void**)&code , &my_func ) ;
 
 
-	while(i < 70){
-		printf("Posicao %02x\n" , code[i]);
+	while(i < 100){
+		printf("Posicao %d %02x\n" ,i ,code[i]);
 		i++;
 	}
 	
 
-	resultado = (*my_func)(2, 1, 0, 0, 0);
+	resultado = (*my_func)(5, 4, 3, 0, 0);
 
 	
 	printf ("Resultado de compila: %d\n", resultado);

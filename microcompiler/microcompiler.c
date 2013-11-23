@@ -67,14 +67,14 @@ void gera(FILE *f, void **code , funcp * entry)
 	unsigned char ecxMenosEdx[] = {0x29, 0xca};
 	unsigned char ecxVezesEdx[] = {0x0f, 0xaf, 0xd1};
 
-	posic_ret[0][0] = 5;
-
 	TodasFuncoes = (unsigned char*) malloc (1280 * sizeof(unsigned char)); 
 
 	while ((c = fgetc(f)) != EOF) {
 	    switch (c) {
 	      case 'f': {  /* function */
 				if (fscanf(f, "unction") != 0) error("comando invalido", line);
+
+				posic_ret[0][0] = 5;
 
 				my_array[i] = (unsigned char*) malloc (128 * sizeof(unsigned char)); 
 				posic_func_ar[i] = posic_array;
@@ -99,6 +99,7 @@ void gera(FILE *f, void **code , funcp * entry)
 				/* Reinicializa variaveis para funcoes */
 				posic_array = 0;
 				in_retorno = 0;
+
 				i++;
 				
 				break;
@@ -118,60 +119,10 @@ void gera(FILE *f, void **code , funcp * entry)
 				  //printf("%c%d = call %d %c%d\n", v0, i0, fil, v1, i1);
 
 
-				  if(v0 == 'p'){
-
-					int val=0;
-					unsigned char param2[] = {0x8b, 0x55};
-				    posic_array = monta_array (my_array[i], param2, posic_array, 2);
-
-					if(v1 == 'v'){
-						my_array[i][posic_array] = -((i1+1) * 4);
-					}else{
-						my_array[i][posic_array] = (i1 * 4) + 8;
-					}
-					printf("Valor a retornar %d posicao %02x" , i1, my_array[i][posic_array]);
-					posic_array++;
-											
-					unsigned char param21[] = {0x52, 0xe8}; 
-					posic_array = monta_array (my_array[i], param21, posic_array, 2);
-
-					/*** adicionar destino ***/
-					*( (int *) &my_array[i][posic_array] ) = 0;
-					posic_array += 4;
-
-					val = (int)&my_array[fil][posic_func_ar[fil]] - (int)&my_array[i][posic_array];
-
-					
-					my_array[i][posic_array-1]   = val >> 24;
-					my_array[i][posic_array-2]   = val >> 16;
-					my_array[i][posic_array-3]   = val >> 8;
-					my_array[i][posic_array-4]   = val;
-
-					
-					unsigned char param3[] = {0x5a, 0x89, 0x45};
-				    posic_array = monta_array (my_array[i], param3, posic_array, 3);
-					if(v1 == 'v'){
-						my_array[i][posic_array] = -((i0+1) * 4);
-					}else{
-						my_array[i][posic_array] = (i0 * 4) + 8;
-					}
-
-					printf("Qual valor 3 ? %02x\n" , my_array[i][posic_array]);
-	
-					posic_array++;
-
-
-					//posic_ret[in_retorno-1][1] =  posic_array;
-
-					if(in_retorno > 0){
-						posic_ret[in_retorno][0] += 18;
-					}
-
-
-				  }else if(v0 == 'v'){
+				  if(v0 == 'v' || v0 == 'p'){
 					 
                     int val=0;
-					unsigned char param2[] = {0x8b, 0x55};
+					unsigned char param2[] = {0xff, 0x75};
 				    posic_array = monta_array (my_array[i], param2, posic_array, 2);
 
 					if(v1 == 'v'){
@@ -182,8 +133,8 @@ void gera(FILE *f, void **code , funcp * entry)
 					printf("Valor a retornar %d posicao %02x" , i1, my_array[i][posic_array]);
 					posic_array++;
 											
-					unsigned char param21[] = {0x52, 0xe8}; 
-					posic_array = monta_array (my_array[i], param21, posic_array, 2);
+					unsigned char param21[] = {0xe8}; 
+					posic_array = monta_array (my_array[i], param21, posic_array, 1);
 
 					/*** adicionar destino ***/
 					*( (int *) &my_array[i][posic_array] ) = 0;
@@ -198,9 +149,10 @@ void gera(FILE *f, void **code , funcp * entry)
 					my_array[i][posic_array-4]   = val;
 
 					
-					unsigned char param3[] = {0x5a, 0x89, 0x45};
-				    posic_array = monta_array (my_array[i], param3, posic_array, 3);
-					if(v1 == 'v'){
+					unsigned char param3[] = {0x83, 0xc4, 0x04, 0x89, 0x45};
+				    posic_array = monta_array (my_array[i], param3, posic_array, 5);
+
+					if(v0 == 'v'){
 						my_array[i][posic_array] = -((i0+1) * 4);
 					}else{
 						my_array[i][posic_array] = (i0 * 4) + 8;
@@ -214,7 +166,11 @@ void gera(FILE *f, void **code , funcp * entry)
 					//posic_ret[in_retorno-1][1] =  posic_array;
 
 					if(in_retorno > 0){
-						posic_ret[in_retorno][0] += 18;
+						if(v1 == 'v'){
+							posic_ret[in_retorno][0] += 19;
+						}else if(v1 == 'p'){
+							posic_ret[in_retorno][0] += 14;
+						}
 					}
 
 				  }

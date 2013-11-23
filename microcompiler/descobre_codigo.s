@@ -1,4 +1,4 @@
-.global   ex1, ex1, ex12, ex2, ex3
+.global   ex1, ex1, ex12, ex2, ex3, foo
 
 ex1:	push    %ebp
         movl    %esp, %ebp
@@ -13,34 +13,56 @@ ex1:	push    %ebp
         movl    %ebp, %esp
         popl    %ebp
         ret
+		
+foo:	push    %ebp
+        movl    %esp, %ebp
+
+		movl    $2, %edx
+	    subl    $3, %edx
+		movl    %edx, %eax
+
+        movl    %ebp, %esp
+        popl    %ebp
+	    ret
 /*
-ret? p0 $2
+
 */
+		
 ex12:	push    %ebp
         movl    %esp, %ebp
 
+		subl    $20, %esp
+				
+		push    8(%ebp)
+		call    ex12		
+		addl    $4, %esp
+		movl    %eax, -4(%ebp)
 		
-		movl    -4(%ebp), %edx
-		movl    8(%ebp), %eax
-		cmpl    $0, %edx
-		je      ff2
 		
-		movl    $0, %eax
-		
-ff2:    movl    %ebp, %esp
+ff3:    movl    %ebp, %esp
         popl    %ebp
         ret
 		
 ex11:	push    %ebp
         movl    %esp, %ebp
-
-	    cmpl    $0, 8(%ebp)
-		je      f2
-f:		movl    $2, %eax
-
-f2:     movl    $0, %edx
-	
-        movl    %ebp, %esp
+		subl    $20, %esp
+		
+		movl    12(%ebp), %ecx
+		cmpl    $0, %ecx
+		je      f12
+		subl    $1, %ecx
+	    movl    %ecx, -4(%ebp)
+		push    -4(%ebp)
+		call    ex12
+		addl    $4, %esp
+		movl    %eax, -8(%ebp)
+		imul    %ecx, %eax
+		movl    %eax, -4(%ebp)
+		
+f12:    movl    $1, %eax
+		jmp     ff2
+		
+ff2:    movl    %ebp, %esp
         popl    %ebp
         ret
 
