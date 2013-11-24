@@ -2,8 +2,8 @@
 *
 * TRABALHO - Software Básico - 2013.2 - 3WA
 * Alunos:
-* Alexandre Werneck 1320614
-* Stefano
+* Alexandre Werneck 1320614 3WA
+* Stefano Politi 1111513 3WA
 *
 */
 
