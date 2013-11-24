@@ -1,0 +1,5 @@
+function
+ret? p0 p1
+ret? $0 p0
+ret? p1 p2
+end

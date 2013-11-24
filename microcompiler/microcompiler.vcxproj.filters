@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="microcompiler.c">
+    <ClCompile Include="principal.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="principal.c">
+    <ClCompile Include="gera.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="microcompiler.h">
+    <ClInclude Include="gera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

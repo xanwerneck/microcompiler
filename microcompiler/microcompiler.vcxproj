@@ -74,11 +74,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="microcompiler.c" />
+    <ClCompile Include="gera.c" />
     <ClCompile Include="principal.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="microcompiler.h" />
+    <ClInclude Include="gera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

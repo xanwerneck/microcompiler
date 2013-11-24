@@ -1,0 +1,131 @@
+_____________________________________________
+
+  TRABALHO 2 DE SOFTWARE BÁSICO - RELATÓRIO 
+_____________________________________________
+
+_____________________________________________
+ 
+ Aluno: Alexandre Werneck Andreza   
+ Matr.: 1320614         		    
+ Aluno: Stefano                     
+ Matr.: 111111         		     
+ 
+ Turma: 3WA 						 
+ PUC-Rio - Depto. de Informática    
+_____________________________________________
+
+_____________________________________________
+
+  ÍNDICE
+_____________________________________________
+
+	1 - Relatório de Desenvolvimento
+	2 - Exemplos de testes
+	3 - Help
+
+_____________________________________________
+
+  1 - RELATÓRIO DE DESENVOLVIMENTO
+_____________________________________________
+
+Considerações Gerais:
+
+	 1 - O trabalho foi desenvolvido utilizando dois diferentes editores
+	 de texto, no ambiente Windows o Visual Studio 2010 e em Linux o 
+	 Sublime Text;
+	 
+	 2 - Para geração do código de máquina a partir do arquivo assembly
+	 descobre_codigo.s que faz parte do projeto mas não foi enviado a pedido
+	 da professora utilizamos o objdump nos dois ambientes
+	 Formato : objdump -d descobre_codigo.o
+	 
+	 3 - A compilação do programa completo também foi feita em Windows e Linux
+	 ambos utilizando o gcc, porém com diretivas diferentes.
+	 Win : gcc -Wall -o prog principal.c gera.c
+	 Lin : gcc -Wall -Wa,--execstack -m32 -o prog principal.c gera.c
+	 * Em nenhum dos dois ambientes foram apresentados erros de compilação.
+	 
+	 4 - Foram utilizados diferentes exemplos para testes além dos presentes no
+	 enunciado do trabalho, estes encontram-se na pasta do projeto e igual ao item
+	 2 não foram enviados. Os principais modelos testados, que o grupo considerou
+	 interessantes seguem no fim deste relatório.
+	 
+	 5 - Todas as condições propostas no enunciado foram testadas e validadas pelos
+	 integrantes do grupo. 
+ 
+_____________________________________________
+
+  2 - EXEMPLOS DE TESTES 
+_____________________________________________
+
+___________FUNCOES SIMULTANEAS_______________
+Onde p0 = 5
+
+function
+p0 = p0 * p0
+ret? $0 p0
+end
+function
+end
+function
+end
+function
+ret? p0 $4
+v1 = call 0 p0
+ret? $0 v1
+end
+
+Resultado : 25
+______________________________________________
+
+___________OPERACOES SIMULTANEAS______________
+Onde p0 = 5
+     p1 = 4
+
+function
+ret? p0 $4
+p0 = p1 * $4
+v2 = p0 + $4
+v3 = v2 - $10
+v4 = v3 * $10
+ret? $0 v4
+end
+
+Resultado : 100
+______________________________________________
+
+_______________VARIOS RETORNOS________________
+Onde p0 = 5
+     p1 = 4
+	 p2 = 3
+
+function
+ret? p0 p2
+ret? p1 p0
+ret? $0 p1
+end
+
+Resultado : 4
+
+*Obs: Se por exemplo no último retorno, colocassemos
+$1 ao invés de $0 a função retornará 0, condição que
+definimos no programa para retorno não encontrado.
+______________________________________________
+
+IMPORTANTE:
+* Todos os exemplo propostos no enunciado foram testados 
+e funcionaram corretamente mas optamos por não coloca-los 
+aqui, somente alguns mais específicos estão presentes.
+
+_____________________________________________
+
+  3 - HELP
+_____________________________________________
+
+Erros e dúvidas referente à execução do programa podem ser revisadas com:
+
+	Alexandre Werneck - xanwerneck@gmail.com
+	Stefano - stefano@microsoft.com
+
+______________________________________________________
+Este relatório foi gerado no dia 24/11/2013 às 11:28, correspondendo à primeira versão do programa.
