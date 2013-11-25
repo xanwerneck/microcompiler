@@ -1,5 +1,7 @@
 function
-ret? p0 p2
-ret? p0 p0
-ret? p3 p1
+v0 = p0 + $2
+v0 = v0 + $2
+v0 = v0 - $2
+p1 = v0 * $-1
+ret? $0 p1
 end

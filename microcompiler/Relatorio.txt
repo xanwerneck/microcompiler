@@ -112,10 +112,36 @@ $1 ao invés de $0 a função retornará 0, condição que
 definimos no programa para retorno não encontrado.
 ______________________________________________
 
+______________VALORES NEGATIVOS_______________
+Onde p0 = 5
+     p1 = 4 (Valor será alterado)
+	 
+function
+v0 = p0 + $2
+v0 = v0 + $2
+v0 = v0 - $2
+p1 = v0 * $-1
+ret? $0 p1
+end
+
+Resultado : -7
+______________________________________________
+
 IMPORTANTE:
 * Todos os exemplo propostos no enunciado foram testados 
 e funcionaram corretamente mas optamos por não coloca-los 
 aqui, somente alguns mais específicos estão presentes.
+
+* O programa aceita definidos no arquivo de entrada no máximo
+10 funções e por sua vez cada função aceita apenas 5 condições
+de retorno. Para aumentar essa capacidade nas condições de retorno
+se faz necessário aumentar o espaço destinado ao malloc e 
+gerar novo executável.
+
+* Em todos os casos de testes utilizados definimos no retorno 
+do código gerado e para seguinte execução os parâmetros conforme
+exemplo abaixo:
+resultado = (*my_func)(5, 4, 3, 0, 0);
 
 _____________________________________________
 
